@@ -1,0 +1,16 @@
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.exe.config
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.exe
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.pdb
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.AssemblyReference.cache
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.SuggestedBindingRedirects.cache
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.CoreCompileInputs.cache
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.exe
+C:\Users\Weslley\source\repos\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.pdb
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.exe.config
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.exe
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\bin\Debug\projeto_matriz.pdb
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.AssemblyReference.cache
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.SuggestedBindingRedirects.cache
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.csproj.CoreCompileInputs.cache
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.exe
+C:\Users\Weslley\Desktop\criptografia\projeto_matriz\projeto_matriz\obj\Debug\projeto_matriz.pdb
