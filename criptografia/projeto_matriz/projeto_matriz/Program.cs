@@ -12,17 +12,16 @@ namespace projeto_matriz
 {
     internal class Program
     {
-        //bloco principal (menu)
-        private static bool debug = false; //bool para o debug
-        public static int Main(string[] args)
+        private static bool debug = false;
+        private static bool CPFusado = false;
+        public static int Main()
         {
-            //texto em ascii, apenas para estética
             Console.WriteLine("\n\t ______     ______     __     ______   ______   ______" +
                           "\n\t/\\  ___\\   /\\  == \\   /\\ \\   /\\  == \\ /\\__  _\\ /\\  __ \\" +
                           "\n\t\\ \\ \\____  \\ \\  __<   \\ \\ \\  \\ \\  _-/ \\/_/\\ \\/ \\ \\ \\/\\ \\" +
                           "\n\t \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\  \\ \\_\\      \\ \\_\\  \\ \\_____\\" +
                           "\n\t  \\/_____/   \\/_/ /_/   \\/_/   \\/_/       \\/_/   \\/_____/" +
-                          "\n\t\t\t\t\t\t     Versão 0.2.1");
+                          "\n\t\t\t\t\t\t     Versão 0.3.0");
 
             Console.CursorVisible = false;
             ConsoleKey tecla;
@@ -31,7 +30,6 @@ namespace projeto_matriz
                           "\n\t\t\t???\n\t\t\tSair");
             do
             {
-                //menu em setas, pressiona D para ativar o debug
                 string[] opcao = { "Criptografar\t", "Descriptografar\t", "???\t", "Sair\t" };
                 for (int i = 0; i < opcao.Length; i++)
                 {
@@ -45,7 +43,6 @@ namespace projeto_matriz
                 }
                 tecla = Console.ReadKey(true).Key;
 
-                //altera o valor da seleção
                 switch (tecla)
                 {
                     case ConsoleKey.DownArrow:
@@ -92,15 +89,15 @@ namespace projeto_matriz
                     }
                 case 3:
                     {
-                        return 0;
+                        exits();
+                        break;
                     }
             }
             return 0;
         }
-        static int criptografar()
+        static void criptografar()
         {
             Console.Clear();
-            bool CPFusado = false;
             ConsoleKey tecla;
             short selecionado = 0;
             Console.WriteLine("\n\tDeseja utilizar o CPF para a criptografia?");
@@ -148,76 +145,7 @@ namespace projeto_matriz
             //solicita e valida o CPF
             if (CPFusado)
             {
-                Console.Clear();
-                Console.WriteLine("\n\tDigite seu CPF (sem pontos ou hifen)");
-                Console.Write("\tCPF: ");
-                string CPF = Console.ReadLine();
-                short[] nCPF = new short[11];
-                int[] vCPF = new int[2];
-
-                do
-                {
-                    Console.Clear();
-                    while (CPF.Length != 11)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\n\tCPF inválido, digite novamente.");
-                        Console.Write("\tCPF: ");
-                        CPF = Console.ReadLine();
-                    }
-                    for (int i = 0; i <= CPF.Length - 1; i++)
-                    {
-                        nCPF[i] = short.Parse(CPF[i].ToString());
-                        if (debug)
-                        {
-                            Console.Write($"i[{i}]:{nCPF[i]}, ");
-                        }
-                    }
-
-                    //se o DEBUG estiver ativado a verificação näo é feita
-                    if (debug)
-                    {
-                        Console.WriteLine("\nPressione qualquer tecla para continuar");
-                        Console.ReadKey();
-                        break;
-                    }
-
-                    //início verificação
-                    for (int i = 0; i < 9; i++)
-                    {
-                        vCPF[0] += (nCPF[i] * (10 - i));
-                    }
-                    for (int i = 1; i < 10; i++)
-                    {
-                        vCPF[1] +=  (nCPF[i] * (10 - i));
-                    }
-                    for (int i = 0; i < 2; i++)
-                    {
-                        vCPF[i] = vCPF[i] % 11;
-                        if (vCPF[i] > 1)
-                        {
-                            vCPF[i] = 11 - vCPF[i];
-                        }
-                        else
-                        {
-                            vCPF[i] = 0;
-                        }
-                    }
-
-                    if (vCPF[0] != nCPF[9] || vCPF[1] != nCPF[10])
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\n\tCPF inválido, digite novamente.");
-                        Console.Write("\tCPF: ");
-                        CPF = Console.ReadLine();
-                    }
-                    else
-                    {
-                        Console.WriteLine("CPF válido.");
-                    }
-                    //fim verificação
-
-                } while (CPF.Length != 11 || vCPF[0] != nCPF[9] || vCPF[1] != nCPF[10]);
+                CPFcalc();
             }
             //fim - CPF validado ou inutilizado
             
@@ -225,11 +153,15 @@ namespace projeto_matriz
             Console.WriteLine("\n\tDigite uma senha para criptografia");
             Console.WriteLine("\tSua senha deve possuir entre 4 e 25 caracteres.");
             Console.Write("\tSenha: ");
+            //stringbuilder para permitir a máscara da senha
             StringBuilder senha = new StringBuilder(25);
             ConsoleKeyInfo key;
             bool erroSenha = false;
 
-            string teclavalida = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+`~;:'\"/?\\|.>,< "; //91
+            //C# já converte para a tabela ascii, a matriz não precisa dessa string pra ser montada
+            //essa string serve apenas para a construção da senha
+            //referência tabela ascii https://www.dotnetperls.com/ascii-table
+            string teclavalida = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()ÁáÀàÉéÓóÚúÍíÂâÃãÕõÊêÇç-_=+`~;:'\"/?\\|.>,< ";
             //entrada senha
             do
             {
@@ -250,13 +182,15 @@ namespace projeto_matriz
                 }
                 if (key.Key == ConsoleKey.Backspace && senha.Length > 0)
                 {
+                    //remove um caractere do stringbuilder apenas se for maior que 0
                     senha.Remove(senha.Length - 1, 1);
                     Console.SetCursorPosition(x - 1, y);
                     Console.Write(" ");
                     Console.SetCursorPosition(x - 1, y);
                 }
-                else if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter && !erroSenha)
+                else if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter && !erroSenha && senha.Length <= 25)
                 {
+                    //escreve um asterístico na posição atual do stringbuilder
                     senha.Append(key.KeyChar);
                     Console.Write("*");
                 }
@@ -264,23 +198,58 @@ namespace projeto_matriz
                 {
                     break;
                 }
-            } while (key.Key != ConsoleKey.Enter || senha.Length <= 25);
+            } while (key.Key != ConsoleKey.Enter || senha.Length < 4);
             if (debug)
             {
                 Console.WriteLine($"\nsenha:{senha}");
                 Console.WriteLine("Pressione qualquer tecla para continuar");
                 Console.ReadKey();
+                Console.Clear();
             }
 
-            //começar parte das matrizes aqui
-            //vvvvvv
+            //indica as dimensoes da matriz
+            short dMatriz = (short)Math.Ceiling(Math.Sqrt(senha.Length));
 
-            return 0;
+            //essa parte insere caracteres aleatórios para concluir a matriz quadrada
+            //caso o usuário não digite uma senha grande o suficiente
+            short preencher = (short)Math.Pow(dMatriz, 2);
+            Random rnd = new Random();
+            for (int i = senha.Length; i < preencher; i++)
+            {
+                short crandom = (short)rnd.Next(teclavalida.Length);
+                senha.Append(teclavalida[crandom]);
+            }
+            
+            if(debug)
+            {
+                Console.WriteLine("ordem da matriz: "+dMatriz+"senha alterada: "+senha);
+            }
+
+            int[,] matriz = new int[dMatriz,dMatriz];
+
+            //monta a matriz de acordo com as dimensoes
+            for (int i = 0; i < dMatriz; i++)
+            {
+                for (int j = 0; j < dMatriz; j++)
+                {
+                    //converte para o valor do caractere na tabela ascii
+                    matriz[i,j] = senha[(i*dMatriz)+j];
+                    if (debug)
+                    {
+                        Console.Write($"[{i},{j}]={matriz[i,j]};");
+                    }
+                }
+            }
+
+
+            Console.ReadKey();
+            exits();
         }
-        static int descriptografar()
+        //usar algum tipo de TRIM para remover os caracteres do texto original caso a senha não
+        //tenha caracteres suficientes para uma matriz quadrada > devido ao random
+        static void descriptografar()
         {
             Console.Clear();
-            bool CPFusado = false;
             ConsoleKey tecla;
             short selecionado = 0;
             Console.WriteLine("\n\tVocê utilizou seu CPF para a criptografia?");
@@ -323,7 +292,151 @@ namespace projeto_matriz
                     CPFusado = true;
                 }
             } while (tecla != ConsoleKey.Enter);
+        }
+        static void texto()
+        {
+            //só é possível ler múltiplas linhas de texto a partir de arquivos
+            string textoEntrada;
+            Console.WriteLine("\n\n\tDigite ou copie e cole o texto a ser criptografado/descriptografado");
+            Console.Write("\n\tTexto: ");
+            textoEntrada = Console.ReadLine();
+        }
+        static void CPFcalc()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\tDigite seu CPF (sem pontos ou hifen)");
+            Console.Write("\tCPF: ");
+            string CPF = Console.ReadLine();
+            short[] nCPF = new short[11];
+            int[] vCPF = new int[2];
+            bool erroCPF = false;
 
+            do
+            {
+                Console.Clear();
+                while (CPF.Length != 11)
+                {
+                    Console.Clear();
+                    Console.WriteLine("\n\tCPF inválido, digite novamente.");
+                    Console.Write("\tCPF: ");
+                    CPF = Console.ReadLine();
+                }
+                for (int i = 0; i <= CPF.Length - 1; i++)
+                {
+                    nCPF[i] = short.Parse(CPF[i].ToString());
+                    if (debug)
+                    {
+                        Console.Write($"i[{i}]:{nCPF[i]}, ");
+                    }
+                }
+
+                //se o DEBUG estiver ativado a verificação näo é feita
+                if (debug)
+                {
+                    Console.WriteLine("\nPressione qualquer tecla para continuar");
+                    Console.ReadKey();
+                }
+
+                //início verificação
+                for (int i = 0; i < 9; i++)
+                {
+                    vCPF[0] = vCPF[0] + (nCPF[i] * (10 - i));
+                }
+                for (int i = 1; i < 10; i++)
+                {
+                    vCPF[1] = vCPF[1] + (nCPF[i] * (11 - i));
+                }
+                for (int i = 0; i < 2; i++)
+                {
+                    vCPF[i] = vCPF[i] % 11;
+                    if (vCPF[i] > 1)
+                    {
+                        vCPF[i] = 11 - vCPF[i];
+                    }
+                    else
+                    {
+                        vCPF[i] = 0;
+                    }
+                }
+
+                if (vCPF[0] != nCPF[9] || vCPF[1] != nCPF[10])
+                {
+                    Console.Clear();
+                    Console.WriteLine("\n\tCPF inválido, digite novamente.");
+                    Console.Write("\tCPF: ");
+                    CPF = Console.ReadLine();
+                    vCPF[0] = 0;
+                    vCPF[1] = 0;
+                    erroCPF = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n\tCPF válido.\n\tPressione qualquer tecla para continuar");
+                    Console.ReadKey();
+                    erroCPF = false;
+                }
+            } while (CPF.Length != 11 || erroCPF);
+        }
+        static void detCalc()
+        {
+            //fazer inversa por algoritmo de bareiss ou eliminação de gauss-jordan
+            //equação geral da determinante
+
+        }
+        static void invCalc()
+        {
+
+        }
+        static int exits()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\tTem certeza que deseja sair?");
+            ConsoleKey tecla;
+            short selecionado = 0;
+            Console.Write("\n\n\t\tSim\n\t\tNão");
+            do
+            {
+                string[] opcao = { "Sim\t", "Não\t" };
+                for (int i = 0; i < opcao.Length; i++)
+                {
+                    Console.SetCursorPosition(16, 4 + i);
+                    if (i == selecionado)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    Console.Write($"{opcao[i]}");
+                    Console.ResetColor();
+                }
+                tecla = Console.ReadKey(true).Key;
+                switch (tecla)
+                {
+                    case ConsoleKey.DownArrow:
+                        {
+                            if (selecionado < opcao.Length)
+                            {
+                                selecionado++;
+                            }
+                            break;
+                        }
+                    case ConsoleKey.UpArrow:
+                        {
+                            if (selecionado > 0)
+                            {
+                                selecionado--;
+                            }
+                            break;
+                        }
+                }
+            } while (tecla != ConsoleKey.Enter);
+            if (selecionado == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                Console.Clear();
+                Main();
+            }
             return 0;
         }
     }
